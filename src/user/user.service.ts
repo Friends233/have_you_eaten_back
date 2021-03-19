@@ -7,6 +7,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './schemas/user.schema';
 import { CreateUserDto } from './dto/create.user.dto';
+import mongoose = require('mongoose');
 
 @Injectable()
 export class UserService {
@@ -24,8 +25,18 @@ export class UserService {
   }
 
   // 添加单个用户
-  async addOne(body: CreateUserDto): Promise<void> {
-    await this.userModel.create(body);
+  async addOne(body: CreateUserDto): Promise<boolean> {
+    const res = await this.userModel.findOne({ user_name: body.user_name });
+    if (res === null) {
+      await this.userModel.create({
+        _id: new mongoose.Types.ObjectId(),
+        user_level: 2,
+        ...body,
+      });
+      return true;
+    } else {
+      return false;
+    }
   }
 
   // 编辑单个用户
@@ -36,5 +47,9 @@ export class UserService {
   // 删除单个用户
   async deleteOne(_id: string): Promise<void> {
     await this.userModel.findByIdAndDelete(_id);
+  }
+
+  async login(body: any): Promise<User> {
+    return await this.userModel.findOne(body);
   }
 }

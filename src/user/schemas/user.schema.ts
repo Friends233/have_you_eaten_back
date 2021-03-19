@@ -19,10 +19,10 @@ export class User {
   user_pass: string;
 
   @Prop()
-  level: number;
+  user_level: number;
 
   @Prop()
-  address: string;
+  user_address: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

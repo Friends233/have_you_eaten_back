@@ -25,7 +25,6 @@ interface UserResponse<T = unknown> {
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  // GET /user/users
   @Get('all')
   async findAll(): Promise<UserResponse<User[]>> {
     return {
@@ -35,7 +34,32 @@ export class UserController {
     };
   }
 
-  // GET /user/:_id
+  @Post('login')
+  async userLogin(@Body() body: CreateUserDto): Promise<UserResponse<User[]>> {
+    const res: User = await this.userService.login(body);
+    if (res) {
+      delete res.user_pass;
+      return {
+        code: 200,
+        data: [res],
+        message: '登陆成功!',
+      };
+    } else {
+      return {
+        code: 200,
+        message: '账号或密码错误',
+      };
+    }
+  }
+
+  @Post('register')
+  async userReg(@Body() body: CreateUserDto): Promise<UserResponse<User[]>> {
+    const res: boolean = await this.userService.addOne(body);
+    return {
+      code: 200,
+      message: res ? '注册成功' : '账号已存在',
+    };
+  }
   @Get(':_id')
   async findOne(@Param('_id') _id: string): Promise<UserResponse<User>> {
     return {
@@ -45,7 +69,6 @@ export class UserController {
     };
   }
 
-  // POST /user
   @Post()
   async addOne(@Body() body: any): Promise<UserResponse> {
     await this.userService.addOne(body);
@@ -55,7 +78,6 @@ export class UserController {
     };
   }
 
-  // PUT /user/:_id
   @Put(':_id')
   async editOne(
     @Param('_id') _id: string,
@@ -68,7 +90,6 @@ export class UserController {
     };
   }
 
-  // DELETE /user/:_id
   @Delete(':_id')
   async deleteOne(@Param('_id') _id: string): Promise<UserResponse> {
     await this.userService.deleteOne(_id);
