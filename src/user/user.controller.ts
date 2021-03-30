@@ -19,6 +19,7 @@ interface UserResponse<T = unknown> {
   code: number;
   data?: T;
   message: string;
+  access_token?: T;
 }
 
 @Controller('user')
@@ -35,7 +36,7 @@ export class UserController {
   }
 
   @Post('login')
-  async userLogin(@Body() body: CreateUserDto): Promise<UserResponse<User[]>> {
+  async userLogin(@Body() body: User): Promise<UserResponse> {
     const res: User = await this.userService.login(body);
     if (res) {
       delete res.user_pass;
@@ -53,7 +54,7 @@ export class UserController {
   }
 
   @Post('register')
-  async userReg(@Body() body: CreateUserDto): Promise<UserResponse<User[]>> {
+  async userReg(@Body() body: User): Promise<UserResponse<User[]>> {
     const res: boolean = await this.userService.addOne(body);
     return {
       code: 200,

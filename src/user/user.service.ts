@@ -7,7 +7,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './schemas/user.schema';
 import { CreateUserDto } from './dto/create.user.dto';
-import mongoose = require('mongoose');
+import { newObjecId } from '../utils/index';
 
 @Injectable()
 export class UserService {
@@ -17,6 +17,10 @@ export class UserService {
   async findAll(): Promise<User[]> {
     const users = await this.userModel.find();
     return users;
+  }
+
+  async findOneName(name: string): Promise<User> {
+    return await this.userModel.findOne({ user_name: name });
   }
 
   // 查找单个用户
@@ -29,7 +33,7 @@ export class UserService {
     const res = await this.userModel.findOne({ user_name: body.user_name });
     if (res === null) {
       await this.userModel.create({
-        _id: new mongoose.Types.ObjectId(),
+        _id: newObjecId(),
         user_level: 2,
         ...body,
       });
@@ -40,7 +44,7 @@ export class UserService {
   }
 
   // 编辑单个用户
-  async editOne(_id: string, body: any): Promise<void> {
+  async editOne(_id: string, body: User): Promise<void> {
     await this.userModel.findByIdAndUpdate(_id, body);
   }
 
@@ -49,7 +53,8 @@ export class UserService {
     await this.userModel.findByIdAndDelete(_id);
   }
 
-  async login(body: any): Promise<User> {
+  // 登录
+  async login(body: User): Promise<User> {
     return await this.userModel.findOne(body);
   }
 }
