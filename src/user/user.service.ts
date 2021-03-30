@@ -29,13 +29,14 @@ export class UserService {
   }
 
   // 添加单个用户
-  async addOne(body: CreateUserDto): Promise<boolean> {
-    const res = await this.userModel.findOne({ user_name: body.user_name });
+  async addOne(body): Promise<boolean> {
+    const res = await this.userModel.findOne({ user_name: body.userName });
     if (res === null) {
       await this.userModel.create({
         _id: newObjecId(),
         user_level: 2,
-        ...body,
+        user_name: body.userName,
+        user_pass: body.userPass,
       });
       return true;
     } else {
