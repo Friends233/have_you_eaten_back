@@ -12,14 +12,13 @@ import {
   Delete,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create.user.dto';
+import { UserDto } from './dto/user.dto';
 import { User } from './schemas/user.schema';
 
 interface UserResponse<T = unknown> {
   code: number;
   data?: T;
   message: string;
-  access_token?: T;
 }
 
 @Controller('user')
@@ -36,13 +35,15 @@ export class UserController {
   }
 
   @Post('login')
-  async userLogin(@Body() body: User): Promise<UserResponse> {
+  async userLogin(@Body() body: UserDto): Promise<UserResponse> {
     const res: User = await this.userService.login(body);
     if (res) {
-      delete res.user_pass;
       return {
         code: 1,
-        data: [res],
+        data: {
+          userInfo: res,
+          access_token: 'token',
+        },
         message: '登陆成功!',
       };
     } else {
@@ -54,7 +55,7 @@ export class UserController {
   }
 
   @Post('register')
-  async userReg(@Body() body): Promise<UserResponse> {
+  async userReg(@Body() body: UserDto): Promise<UserResponse> {
     const res: boolean = await this.userService.addOne(body);
     if (res) {
       return {

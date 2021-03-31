@@ -6,7 +6,7 @@ import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './schemas/user.schema';
-import { CreateUserDto } from './dto/create.user.dto';
+import { UserDto } from './dto/user.dto';
 import { newObjecId } from '../utils/index';
 
 @Injectable()
@@ -29,7 +29,7 @@ export class UserService {
   }
 
   // 添加单个用户
-  async addOne(body): Promise<boolean> {
+  async addOne(body: UserDto): Promise<boolean> {
     const res = await this.userModel.findOne({ user_name: body.userName });
     if (res === null) {
       await this.userModel.create({
@@ -55,7 +55,15 @@ export class UserService {
   }
 
   // 登录
-  async login(body: User): Promise<User> {
-    return await this.userModel.findOne(body);
+  async login(body: UserDto): Promise<User> {
+    console.log(body);
+    const user = await this.userModel.findOne({
+      user_name: body.userName,
+    });
+    if (user.user_pass === body.userPass) {
+      return user;
+    } else {
+      return null;
+    }
   }
 }
