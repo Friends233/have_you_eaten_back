@@ -38,11 +38,12 @@ export class UserController {
   async userLogin(@Body() body: UserDto): Promise<UserResponse> {
     const res: User = await this.userService.login(body);
     if (res) {
+      res.user_pass = '';
       return {
         code: 1,
         data: {
           userInfo: res,
-          access_token: 'token',
+          access_token: res.user_name,
         },
         message: '登陆成功!',
       };
@@ -69,6 +70,28 @@ export class UserController {
       };
     }
   }
+
+  @Post('refresh')
+  async refreshUser(@Body('token') token: string): Promise<UserResponse> {
+    const res: User | void = await this.userService.tokenToUser(token);
+    if (token && res) {
+      res.user_pass = '';
+      return {
+        code: 1,
+        data: {
+          userInfo: res,
+          access_token: res.user_name,
+        },
+        message: '成功',
+      };
+    } else {
+      return {
+        code: 0,
+        message: '失败',
+      };
+    }
+  }
+
   @Get(':_id')
   async findOne(@Param('_id') _id: string): Promise<UserResponse<User>> {
     return {

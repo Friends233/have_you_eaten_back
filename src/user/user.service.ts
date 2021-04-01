@@ -54,13 +54,19 @@ export class UserService {
     await this.userModel.findByIdAndDelete(_id);
   }
 
+  // 根据token返回用户数据
+  async tokenToUser(token: string): Promise<User> {
+    return await this.userModel.findOne({
+      user_name: token,
+    });
+  }
+
   // 登录
   async login(body: UserDto): Promise<User> {
-    console.log(body);
     const user = await this.userModel.findOne({
       user_name: body.userName,
     });
-    if (user.user_pass === body.userPass) {
+    if (user && user.user_pass === body.userPass) {
       return user;
     } else {
       return null;
