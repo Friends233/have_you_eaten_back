@@ -25,6 +25,7 @@ interface ShopResponse<T = unknown> {
 export class ShopController {
   constructor(private readonly ShopService: ShopService) {}
 
+  // 查所有
   @Get('all')
   async findAll(): Promise<ShopResponse<Shop[]>> {
     return {
@@ -34,15 +35,18 @@ export class ShopController {
     };
   }
 
-  @Post()
-  async addOne(@Body() body: any): Promise<ShopResponse> {
-    await this.ShopService.addOne(body);
+  // 根据id查
+  @Get(':id')
+  async findOne(@Param() param): Promise<ShopResponse<Shop>> {
+    console.log(param.id)
     return {
       code: 1,
+      data: await this.ShopService.findOne(param.id),
       message: 'Success.',
     };
   }
 
+  // 根据id编辑
   @Put(':_id')
   async editOne(
     @Param('_id') _id: string,
@@ -55,6 +59,7 @@ export class ShopController {
     };
   }
 
+  // 根据id删除
   @Delete(':_id')
   async deleteOne(@Param('_id') _id: string): Promise<ShopResponse> {
     await this.ShopService.deleteOne(_id);

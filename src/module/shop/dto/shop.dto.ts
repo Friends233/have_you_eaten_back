@@ -4,8 +4,22 @@
  */
 export class ShopDto {
   readonly _id?: string;
-  readonly ShopName: string;
-  readonly ShopPass: string;
-  readonly ShopLevel?: number;
-  readonly ShopAddress?: string;
+  name?: string;
+  rating?: number;
+  price?: number;
+  address?: string;
+  phoneNumber?: string;
+  business?: string;
+  desc?: string[];
+  coverImg?: string[];
+  food?: Foods;
+}
+
+interface Foods {
+  popular?: string[];
+  discount?: string[];
+  individual?: string[];
+  team?: string[];
+  snackDrink?: string[];
+  fullReduction?: string[];
 }

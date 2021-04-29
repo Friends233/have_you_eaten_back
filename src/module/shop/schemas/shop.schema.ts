@@ -7,10 +7,28 @@ import { Document } from 'mongoose';
 
 export type ShopDocument = Shop & Document;
 
+interface Goods {
+  id?: string;
+  name?: string;
+  desc?: string;
+  sold?: string;
+  price?: number;
+  url?: string;
+}
+
+interface Foods {
+  popular?: Goods[];
+  discount?: Goods[];
+  individual?: Goods[];
+  team?: Goods[];
+  snackDrink?: Goods[];
+  fullReduction?: Goods[];
+}
+
 @Schema()
 export class Shop {
   @Prop()
-  _id: string;
+  id: string;
 
   @Prop()
   name: string;
@@ -20,7 +38,7 @@ export class Shop {
 
   @Prop()
   rating: number;
-  
+
   @Prop()
   address: string;
 
@@ -35,6 +53,9 @@ export class Shop {
 
   @Prop()
   coverImg: string[];
+
+  // @Prop()
+  // food: Foods;
 }
 
 export const ShopSchema = SchemaFactory.createForClass(Shop);
