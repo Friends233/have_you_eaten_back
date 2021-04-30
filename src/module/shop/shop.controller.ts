@@ -38,10 +38,19 @@ export class ShopController {
   // 根据id查
   @Get(':id')
   async findOne(@Param() param): Promise<ShopResponse<Shop>> {
-    console.log(param.id)
     return {
       code: 1,
       data: await this.ShopService.findOne(param.id),
+      message: 'Success.',
+    };
+  }
+
+  @Post('sort')
+  async findShopBySort(@Body() body): Promise<ShopResponse<Shop[]>>  {
+    console.log(body)
+    return {
+      code: 1,
+      data: await this.ShopService.findOneByType(body),
       message: 'Success.',
     };
   }

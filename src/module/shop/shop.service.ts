@@ -37,4 +37,22 @@ export class ShopService {
   async deleteOne(_id: string): Promise<void> {
     await this.ShopModel.findByIdAndDelete(_id);
   }
+
+  // 根据类型id查找
+  async findOneByType(body: any): Promise<Shop[]> {
+    const conditions = { "id": 1, "name": 1, "address": 1, "price": 1, "rating": 1, "imgUrl": 1 }
+    if (body && body.typeIds) {
+      const or = body.typeIds.split(',').map(item => {
+        const reg = new RegExp(item, 'i')
+        return { typeIds: { $regex: reg } }
+      })
+      return await this.ShopModel.find({ $or: or }, conditions)
+    } else {
+      return await this.ShopModel.find({}, conditions)
+    }
+  }
+
+  async getShopList(body:any) : Promise<Shop[]> {
+    return await this.ShopModel.find();
+  }
 }

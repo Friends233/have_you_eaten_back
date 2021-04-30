@@ -23,4 +23,5 @@ export class SortService {
   async findOne(_id: string): Promise<Sort> {
     return await this.SortModel.findOne({ id: _id });
   }
+
 }
