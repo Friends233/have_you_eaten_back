@@ -8,4 +8,5 @@ export class UserDto {
   readonly userPass: string;
   readonly userLevel?: number;
   readonly userAddress?: string;
+  readonly userPhone?:string;
 }

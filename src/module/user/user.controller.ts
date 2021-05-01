@@ -75,7 +75,6 @@ export class UserController {
   async refreshUser(@Body('token') token: string): Promise<UserResponse> {
     const res: User | void = await this.userService.tokenToUser(token);
     if (token && res) {
-      res.user_pass = '';
       return {
         code: 1,
         data: {
@@ -101,16 +100,7 @@ export class UserController {
     };
   }
 
-  @Post()
-  async addOne(@Body() body: any): Promise<UserResponse> {
-    await this.userService.addOne(body);
-    return {
-      code: 1,
-      message: 'Success.',
-    };
-  }
-
-  @Put(':_id')
+  @Post('edit/:_id')
   async editOne(
     @Param('_id') _id: string,
     @Body() body: any,

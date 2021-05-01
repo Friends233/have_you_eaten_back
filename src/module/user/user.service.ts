@@ -11,7 +11,7 @@ import { newObjecId } from '../../utils/index';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel('user') private userModel: Model<UserDocument>) {}
+  constructor(@InjectModel('user') private userModel: Model<UserDocument>) { }
 
   // 查找所有用户
   async findAll(): Promise<User[]> {
@@ -45,8 +45,18 @@ export class UserService {
   }
 
   // 编辑单个用户
-  async editOne(_id: string, body: User): Promise<void> {
-    await this.userModel.findByIdAndUpdate(_id, body);
+  async editOne(_id: string, body: UserDto): Promise<void> {
+    const userInfo: User = {}
+    for(let i of Object.keys(body)) {
+      switch(i) {
+        case 'userName':userInfo.user_name = body[i];break;
+        case 'userPass':userInfo.user_pass = body[i];break;
+        case 'userAddress':userInfo.user_address = body[i];break;
+        case 'userPhone':userInfo.user_phone = body[i];break;
+      }
+    }
+    console.log(userInfo)
+    await this.userModel.updateOne({ id: _id }, { $set: { ...userInfo } });
   }
 
   // 删除单个用户
