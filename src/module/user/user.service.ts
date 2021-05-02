@@ -55,7 +55,6 @@ export class UserService {
         case 'userPhone':userInfo.user_phone = body[i];break;
       }
     }
-    console.log(userInfo)
     await this.userModel.updateOne({ id: _id }, { $set: { ...userInfo } });
   }
 
