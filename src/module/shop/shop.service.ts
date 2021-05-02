@@ -52,7 +52,7 @@ export class ShopService {
     }
   }
 
-  async getShopList(body:any) : Promise<Shop[]> {
+  async getShopList(body: any): Promise<Shop[]> {
     return await this.ShopModel.find();
   }
 }

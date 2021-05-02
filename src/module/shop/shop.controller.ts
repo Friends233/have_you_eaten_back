@@ -10,6 +10,7 @@ import {
   Param,
   Put,
   Delete,
+  Query
 } from '@nestjs/common';
 import { ShopService } from './shop.service';
 import { ShopDto } from './dto/shop.dto';
@@ -77,4 +78,5 @@ export class ShopController {
       message: 'Success.',
     };
   }
+
 }
