@@ -23,4 +23,15 @@ export class SptService {
   async findOne(_id: string): Promise<Spt> {
     return await this.SptModel.findOne({ user_id: _id });
   }
+
+  // 清空
+  async clearAll(id: string): Promise<any> {
+    return await this.SptModel.updateOne({ user_id: id }, { $set: { content: [] } });
+  }
+
+  // 添加
+  async addFood(id: string, content:any): Promise<any> {
+    return await this.SptModel.updateOne({ user_id: id }, { $set: { content: content } });
+  }
+
 }
