@@ -23,7 +23,7 @@ interface UserResponse<T = unknown> {
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Get('all')
   async findAll(): Promise<UserResponse<User[]>> {
@@ -61,12 +61,13 @@ export class UserController {
     if (res) {
       return {
         code: 1,
+        data: res,
         message: '注册成功',
       };
     } else {
       return {
         code: 0,
-        message: '账号已存在',
+        message: '用户名已存在',
       };
     }
   }

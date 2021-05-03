@@ -31,14 +31,17 @@ export class UserService {
   // 添加单个用户
   async addOne(body: UserDto): Promise<boolean> {
     const res = await this.userModel.findOne({ user_name: body.userName });
+    const num = await this.userModel.find().countDocuments()
     if (res === null) {
       await this.userModel.create({
         _id: newObjecId(),
+        id: `user_${num + 1}`,
         user_level: 2,
         user_name: body.userName,
         user_pass: body.userPass,
+        user_avatar: body.userAvatar
       });
-      return true;
+      return true
     } else {
       return false;
     }
@@ -47,12 +50,12 @@ export class UserService {
   // 编辑单个用户
   async editOne(_id: string, body: UserDto): Promise<void> {
     const userInfo: User = {}
-    for(let i of Object.keys(body)) {
-      switch(i) {
-        case 'userName':userInfo.user_name = body[i];break;
-        case 'userPass':userInfo.user_pass = body[i];break;
-        case 'userAddress':userInfo.user_address = body[i];break;
-        case 'userPhone':userInfo.user_phone = body[i];break;
+    for (let i of Object.keys(body)) {
+      switch (i) {
+        case 'userName': userInfo.user_name = body[i]; break;
+        case 'userPass': userInfo.user_pass = body[i]; break;
+        case 'userAddress': userInfo.user_address = body[i]; break;
+        case 'userPhone': userInfo.user_phone = body[i]; break;
       }
     }
     await this.userModel.updateOne({ id: _id }, { $set: { ...userInfo } });

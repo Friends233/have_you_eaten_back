@@ -21,6 +21,6 @@ export class SptService {
 
   // 查找
   async findOne(_id: string): Promise<Spt> {
-    return await this.SptModel.findOne({ id: _id });
+    return await this.SptModel.findOne({ user_id: _id });
   }
 }

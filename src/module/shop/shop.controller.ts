@@ -48,7 +48,6 @@ export class ShopController {
 
   @Post('sort')
   async findShopBySort(@Body() body): Promise<ShopResponse<Shop[]>>  {
-    console.log(body)
     return {
       code: 1,
       data: await this.ShopService.findOneByType(body),

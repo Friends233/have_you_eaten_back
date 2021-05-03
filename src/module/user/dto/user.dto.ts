@@ -9,4 +9,5 @@ export class UserDto {
   readonly userLevel?: number;
   readonly userAddress?: string;
   readonly userPhone?:string;
+  readonly userAvatar?:string;
 }

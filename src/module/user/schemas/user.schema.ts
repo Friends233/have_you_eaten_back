@@ -13,6 +13,12 @@ export class User {
   _id?: string;
 
   @Prop()
+  id?: string;
+
+  @Prop()
+  user_avatar?:string;
+  
+  @Prop()
   user_name?: string;
 
   @Prop()

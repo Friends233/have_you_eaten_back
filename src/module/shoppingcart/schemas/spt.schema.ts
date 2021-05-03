@@ -13,7 +13,7 @@ export class Spt {
   id: string;
   
   @Prop()
-  content: string;
+  content: any[];
 
   @Prop()
   user_id: string;
