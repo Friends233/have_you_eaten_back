@@ -21,11 +21,22 @@ export class OrderFormService {
 
   // 查找
   async findOne(_id: string): Promise<OrderForm> {
-    return await this.OrderFormModel.findOne({ id: _id });
+    return await this.OrderFormModel.findOne({ userId: _id });
   }
 
   async addOrderForm(userId: string, content: any): Promise<any> {
     const data: any = await this.OrderFormModel.findOne({ userId: userId })
+    const date = new Date()
+    content = content.map(item => {
+      return {
+        label: item.name,
+        num: item.number,
+        date: `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`,
+        url: item.img,
+        type: 0,
+        ...item
+      }
+    })
     const copy = (data.firest).concat(content)
     return await this.OrderFormModel.updateOne({ userId: userId }, { $set: { firest: copy } });
   }
