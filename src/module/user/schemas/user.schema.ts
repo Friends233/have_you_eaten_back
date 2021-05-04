@@ -16,8 +16,8 @@ export class User {
   id?: string;
 
   @Prop()
-  user_avatar?:string;
-  
+  user_avatar?: string;
+
   @Prop()
   user_name?: string;
 
@@ -32,6 +32,9 @@ export class User {
 
   @Prop()
   user_phone?: string;
+
+  @Prop()
+  favorites?: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
