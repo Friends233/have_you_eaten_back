@@ -55,4 +55,13 @@ export class FoodController {
       message: 'Success.',
     };
   }
+
+  @Post('addLabel')
+  async addLabel(@Body() body:any): Promise<FoodResponse<Food>> {
+    await this.FoodService.addLabel(body)
+    return {
+      code: 1,
+      message: 'Success.',
+    };
+  }
 }

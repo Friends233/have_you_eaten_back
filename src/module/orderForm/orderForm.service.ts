@@ -31,7 +31,7 @@ export class OrderFormService {
       return {
         label: item.name,
         num: item.number,
-        date: `${date.getFullYear()}-${date.getMonth()}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`,
+        date: `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`,
         url: item.img,
         type: 0,
         ...item

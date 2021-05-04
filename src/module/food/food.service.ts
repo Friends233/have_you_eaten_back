@@ -29,4 +29,8 @@ export class FoodService {
     const reg = new RegExp(name, 'i')
     return await this.FoodModel.find({ $or: [{ name: { $regex: reg } }] });
   }
+
+  async addLabel(body: any): Promise<any> {
+    await this.FoodModel.updateOne({ id: body.id }, { $set: { label: body.label } });
+  }
 }

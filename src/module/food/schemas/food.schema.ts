@@ -44,6 +44,9 @@ export class Food {
 
   @Prop()
   url: string;
+
+  @Prop()
+  label:string;
 }
 
 export const FoodSchema = SchemaFactory.createForClass(Food);
