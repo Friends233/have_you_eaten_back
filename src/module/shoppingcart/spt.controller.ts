@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 import { SptService } from './spt.service';
 import { FoodService } from '../food/food.service'
+import { OrderFormService } from '../orderForm/orderForm.service'
 import { SptDto } from './dto/spt.dto';
 import { Spt } from './schemas/spt.schema';
 
@@ -24,7 +25,7 @@ interface SptResponse<T = unknown> {
 
 @Controller('shoppingcart')
 export class SptController {
-  constructor(private readonly SptService: SptService, private readonly FoodService: FoodService) { }
+  constructor(private readonly SptService: SptService, private readonly OrderFormService: OrderFormService, private readonly FoodService: FoodService) { }
 
   // 查所有
   @Get('all')
@@ -102,6 +103,24 @@ export class SptController {
   @Post('clear/:id')
   async clearAll(@Param() param): Promise<SptResponse<Spt>> {
     await this.SptService.clearAll(param.id)
+    return {
+      code: 1,
+      message: 'Success.',
+    };
+  }
+
+  @Post('submit')
+  async submit(@Body() body: any): Promise<SptResponse<Spt>> {
+    const cart = await this.SptService.findOne(body.userId)
+    const copy = cart.content.filter(item => {
+      if (body.foodIds.includes(item.id)) {
+        return false
+      } else {
+        return item
+      }
+    })
+    await this.SptService.addFood(body.userId, copy)
+    await this.OrderFormService.addOrderForm(body.userId, body.content)
     return {
       code: 1,
       message: 'Success.',
