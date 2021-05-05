@@ -27,7 +27,7 @@ export class FoodService {
   // 根据名称搜索
   async findByName(name: string): Promise<any> {
     const reg = new RegExp(name, 'i')
-    return await this.FoodModel.find({ $or: [{ name: { $regex: reg } }] });
+    return await this.FoodModel.find({ $or: [{ name: { $regex: reg } }, { label: { $regex: reg } }] });
   }
 
   async addLabel(body: any): Promise<any> {
