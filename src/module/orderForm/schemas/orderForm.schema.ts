@@ -23,6 +23,9 @@ export class OrderForm {
   id: string;
 
   @Prop()
+  userId: string;
+
+  @Prop()
   firest?: Order[];
 
   @Prop()

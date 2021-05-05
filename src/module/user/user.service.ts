@@ -19,6 +19,10 @@ export class UserService {
     return users;
   }
 
+  async getNum(): Promise<number> {
+    return await this.userModel.find().countDocuments()
+  }
+
   async findOneName(name: string): Promise<User> {
     return await this.userModel.findOne({ user_name: name });
   }
@@ -29,9 +33,9 @@ export class UserService {
   }
 
   // 添加单个用户
-  async addOne(body: UserDto): Promise<boolean> {
+  async addOne(body: UserDto): Promise<any> {
     const res = await this.userModel.findOne({ user_name: body.userName });
-    const num = await this.userModel.find().countDocuments()
+    const num = await this.getNum()
     if (res === null) {
       await this.userModel.create({
         _id: newObjecId(),
@@ -41,7 +45,7 @@ export class UserService {
         user_pass: body.userPass,
         user_avatar: body.userAvatar
       });
-      return true
+      return `user_${num + 1}`
     } else {
       return false;
     }

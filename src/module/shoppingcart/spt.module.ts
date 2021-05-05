@@ -20,5 +20,6 @@ import { Spt, SptSchema } from './schemas/spt.schema';
   ],
   controllers: [SptController],
   providers: [SptService],
+  exports: [SptService]
 })
 export class SptModule { }

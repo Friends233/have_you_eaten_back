@@ -30,8 +30,20 @@ export class SptService {
   }
 
   // 添加
-  async addFood(id: string, content:any): Promise<any> {
+  async addFood(id: string, content: any): Promise<any> {
     return await this.SptModel.updateOne({ user_id: id }, { $set: { content: content } });
   }
 
+  async getNum(): Promise<number> {
+    return await this.SptModel.find().countDocuments()
+  }
+
+  async createSpt(userId: string): Promise<any> {
+    const num = await this.getNum()
+    await this.SptModel.create({
+      id: `cart_${num + 1}`,
+      user_id: userId,
+      content: []
+    });
+  }
 }

@@ -14,6 +14,8 @@ import {
 import { UserService } from './user.service';
 import { UserDto } from './dto/user.dto';
 import { User } from './schemas/user.schema';
+import { OrderFormService } from '../orderForm/orderForm.service'
+import { SptService } from '../shoppingcart/spt.service'
 
 interface UserResponse<T = unknown> {
   code: number;
@@ -23,7 +25,7 @@ interface UserResponse<T = unknown> {
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly SptService: SptService, private readonly OrderFormService: OrderFormService, private readonly userService: UserService) { }
 
   @Get('all')
   async findAll(): Promise<UserResponse<User[]>> {
@@ -57,7 +59,9 @@ export class UserController {
 
   @Post('register')
   async userReg(@Body() body: UserDto): Promise<UserResponse> {
-    const res: boolean = await this.userService.addOne(body);
+    const res = await this.userService.addOne(body);
+    await this.OrderFormService.createSpt(res)
+    await this.SptService.createSpt(res)
     if (res) {
       return {
         code: 1,

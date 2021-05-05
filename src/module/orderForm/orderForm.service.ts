@@ -31,7 +31,7 @@ export class OrderFormService {
       return {
         label: item.name,
         num: item.number,
-        date: `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`,
+        date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`,
         url: item.img,
         type: 0,
         ...item
@@ -39,5 +39,21 @@ export class OrderFormService {
     })
     const copy = (data.firest).concat(content)
     return await this.OrderFormModel.updateOne({ userId: userId }, { $set: { firest: copy } });
+  }
+
+  async getNum(): Promise<number> {
+    return await this.OrderFormModel.find().countDocuments()
+  }
+
+  async createSpt(userId: string): Promise<any> {
+    const num = await this.getNum()
+    await this.OrderFormModel.create({
+      id: `order_${num + 1}`,
+      userId: userId,
+      firest: [],
+      second: [],
+      third: [],
+      fourth: []
+    });
   }
 }
