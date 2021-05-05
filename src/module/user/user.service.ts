@@ -43,7 +43,10 @@ export class UserService {
         user_level: 2,
         user_name: body.userName,
         user_pass: body.userPass,
-        user_avatar: body.userAvatar
+        user_avatar: body.userAvatar,
+        user_address:'',
+        user_phone:'',
+        favorites:''
       });
       return `user_${num + 1}`
     } else {

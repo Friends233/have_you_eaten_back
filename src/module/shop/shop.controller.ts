@@ -15,6 +15,7 @@ import {
 import { ShopService } from './shop.service';
 import { ShopDto } from './dto/shop.dto';
 import { Shop } from './schemas/shop.schema';
+import { FoodService } from '../food/food.service'
 
 interface ShopResponse<T = unknown> {
   code: number;
@@ -24,7 +25,7 @@ interface ShopResponse<T = unknown> {
 
 @Controller('shop')
 export class ShopController {
-  constructor(private readonly ShopService: ShopService) {}
+  constructor(private readonly ShopService: ShopService, private readonly FoodService: FoodService) { }
 
   // 查所有
   @Get('all')
@@ -38,16 +39,21 @@ export class ShopController {
 
   // 根据id查
   @Get(':id')
-  async findOne(@Param() param): Promise<ShopResponse<Shop>> {
+  async findOne(@Param() param): Promise<ShopResponse<any>> {
+    const data = await this.ShopService.findOne(param.id)
+    const foodList = await this.FoodService.findFoodList(param.id)
     return {
       code: 1,
-      data: await this.ShopService.findOne(param.id),
+      data: {
+        shop: data,
+        food: foodList
+      },
       message: 'Success.',
     };
   }
 
   @Post('sort')
-  async findShopBySort(@Body() body): Promise<ShopResponse<Shop[]>>  {
+  async findShopBySort(@Body() body): Promise<ShopResponse<Shop[]>> {
     return {
       code: 1,
       data: await this.ShopService.findOneByType(body),

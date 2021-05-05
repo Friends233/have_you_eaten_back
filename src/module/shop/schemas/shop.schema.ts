@@ -53,9 +53,6 @@ export class Shop {
 
   @Prop()
   coverImg: string[];
-
-  // @Prop()
-  // food: Foods;
 }
 
 export const ShopSchema = SchemaFactory.createForClass(Shop);

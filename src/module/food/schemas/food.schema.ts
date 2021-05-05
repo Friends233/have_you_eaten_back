@@ -13,6 +13,9 @@ export class Food {
   id: string;
 
   @Prop()
+  shopId: string;
+
+  @Prop()
   desc: string;
 
   @Prop()

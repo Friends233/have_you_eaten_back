@@ -24,6 +24,11 @@ export class FoodService {
     return await this.FoodModel.findOne({ id: _id });
   }
 
+  // 根据店铺id查找
+  async findFoodList(shopId: string): Promise<Food[]> {
+    return await this.FoodModel.find({ shopId: shopId });
+  }
+
   // 根据名称搜索
   async findByName(name: string): Promise<any> {
     const reg = new RegExp(name, 'i')
@@ -32,5 +37,13 @@ export class FoodService {
 
   async addLabel(body: any): Promise<any> {
     await this.FoodModel.updateOne({ id: body.id }, { $set: { label: body.label } });
+  }
+
+  async addFood(body: any): Promise<any> {
+    const num = await this.FoodModel.find().countDocuments()
+    await this.FoodModel.create({
+      id: `food_${num + 1}`,
+      ...body
+    });
   }
 }
